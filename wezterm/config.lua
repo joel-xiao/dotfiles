@@ -7,9 +7,9 @@ local is_windows = wezterm.target_triple:find("windows")
 local leader = is_windows and "CTRL" or "CMD"
 
 -- 默认终端
-config.default_prog = wezterm.target_triple:find('windows')
-  and { 'pwsh.exe' }
-  or { '/bin/zsh' }
+if is_windows then 
+  config.default_prog = { 'pwsh.exe', '-NoLogo' }
+end
 
 -- 默认打开路径
 config.default_cwd = is_windows and "H:/xiao" or "~/Documents/xiao/SZLY/Project"
