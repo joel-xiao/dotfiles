@@ -1,8 +1,28 @@
 
+# -----------------------------
+# Ranger
+# -----------------------------
+chmod +x ~/.config/ranger/scope.sh
+brew install w3m
+# 1. 压缩包预览工具
+brew install atool libarchive unrar p7zip
+# 2. 文档预览工具（PDF/Office/HTML 等）
+brew install poppler mupdf odt2txt pandoc w3m lynx \
+  catdoc djvulibre
+# 3. 媒体与图片工具（图片处理、元数据查看）
+brew install imagemagick exiftool mediainfo fonttools
+# 4. 代码与文本处理工具（语法高亮、JSON 格式化）
+brew install highlight bat pygments jq python3
+# 5. 特殊格式支持（Torrent、ePub 缩略图）
+brew install transmission-cli marianosimone/epub-thumbnailer/epub-thumbnailer
 
-# ranger 所需依赖插件
-brew install highlight pygments bat jq \
-             poppler exiftool imagemagick \
-             ffmpeg mediainfo pandoc \
-             unar p7zip atool
+# 如果 brew xlsx2csv 可以安装成功的使用 brew 而非 pipx
+brew install xlsx2csv
+brew install pipx
+pipx ensurepath
+pipx install xlsx2csv
+# -----------------------------
+# Lunar macOS 系统的屏幕亮度 / 色温调节工具，支持根据环境光自动适配屏幕，也可手动精细化调整，适合需要优化屏幕显示效果的用户（如夜间护眼、匹配外接显示器等）。
+# -----------------------------
+brew install --cask lunar
 
