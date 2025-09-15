@@ -3,7 +3,17 @@
 # Ranger
 # -----------------------------
 chmod +x ~/.config/ranger/scope.sh
-brew install w3m
+# 显示 图片相关等
+#  源码编译 w3m
+brew install autoconf automake pkg-config imlib2 bdw-gc
+git clone https://github.com/tats/w3m.git
+cd w3m
+./configure --with-imagelib=imlib2
+make
+sudo make install
+sudo cp ./w3mimgdisplay /usr/local/bin/
+which w3mimgdisplay
+
 # 1. 压缩包预览工具
 brew install atool libarchive unrar p7zip
 # 2. 文档预览工具（PDF/Office/HTML 等）
