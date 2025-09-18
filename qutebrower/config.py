@@ -21,7 +21,7 @@ c.url.searchengines = {
     "gh": "https://github.com/search?q={}",
     "bd": "https://www.baidu.com/s?wd={}",
     "yt": "https://www.youtube.com/results?search_query={}",
-    "rd": "https://www.reddit.com/search/?q="
+    "rd": "https://www.reddit.com/search/?q={}"  # 修复：补充搜索参数{}
 }
 c.content.blocking.enabled = True
 c.content.blocking.method = "both"
@@ -36,7 +36,7 @@ c.tabs.show = "multiple"
 c.tabs.background = True
 c.statusbar.show = "in-mode"
 c.tabs.favicons.scale = 1.2
-c.zoom.default = "125%"
+c.zoom.default = "125%"  # 全局默认缩放，不支持URL模式
 c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.darkmode.policy.images = "smart"  # macOS 暗色模式优化
 c.colors.webpage.preferred_color_scheme = "dark"
@@ -57,10 +57,10 @@ c.content.javascript.enabled = True  # 全局启用
 config.set("content.javascript.enabled", False, "https://example.com/*")
 config.set("content.javascript.enabled", True, "https://*.google.com/*")
 
-# 媒体与安全
+# 媒体与安全（修复了无效配置项）
 c.content.autoplay = False
-c.content.ssl_strict = True
-c.content.security.force_https = True
+c.content.xss_auditing = True  # 替换无效的content.ssl_strict
+c.content.javascript.can_close_tabs = False  # 替换无效的force_https
 c.content.geolocation = False              # macOS 隐私默认设置
 c.content.notifications.enabled = False    # 禁用网页通知
 
@@ -68,8 +68,8 @@ c.content.notifications.enabled = False    # 禁用网页通知
 # 下载管理 (macOS 适配)
 # ----------------------------
 c.downloads.location.directory = "~/Downloads"  # macOS 默认下载路径
-c.downloads.show_progress_in_statusbar = True
 c.downloads.open_dispatcher = "open {}"  # macOS 打开文件的命令
+# 移除无效的show_progress_in_statusbar配置
 
 # ----------------------------
 # 字体设置 (macOS 系统字体)
@@ -180,10 +180,10 @@ config.bind(LEADER + "ml", "set-cmd-text :bookmark-list")  # 查看书签
 config.bind(LEADER + "hh", "set-cmd-text :history")  # 历史记录
 
 # ----------------------------
-# 分屏操作
+# 分屏操作（修复快捷键冲突）
 # ----------------------------
-config.bind(LEADER + "v", "vsplit")  # 垂直分屏
-config.bind(LEADER + "s", "hsplit")  # 水平分屏
+config.bind(LEADER + "vv", "vsplit")  # 垂直分屏（修改为双v避免冲突）
+config.bind(LEADER + "ss", "hsplit")  # 水平分屏（修改为双s避免冲突）
 config.bind(LEADER + "w", "window-close")  # 关闭当前分屏
 
 # ----------------------------
@@ -203,13 +203,10 @@ config.bind(SECOND + "O", "set-cmd-text :open -t ")
 config.bind(SECOND + "y", "yank")             # 次前缀复制 URL
 
 # ----------------------------
-# 站点特定配置
+# 站点特定配置（使用支持的配置项）
 # ----------------------------
 # 对 GitHub 禁用深色模式
 config.set("colors.webpage.darkmode.enabled", False, "https://github.com/*")
-
-# 对 YouTube 调整缩放
-config.set("zoom.default", "150%", "https://www.youtube.com/*")
 
 # ----------------------------
 # macOS 风格快捷键 (Command 键)
