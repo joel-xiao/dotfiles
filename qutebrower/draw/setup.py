@@ -1,4 +1,4 @@
-def blood(c, options = {}):
+def setup(c, options = {}):
     palette = {
         'background': '#282a36',
         'background-alt': '#282a36', 
