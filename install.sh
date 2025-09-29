@@ -1,3 +1,14 @@
+# -----------------------------
+# NVIM
+# -----------------------------
+# lang vue
+npm install -g @vue/language-server
+# blink.cmp
+cargo build --release --manifest-path ~/.local/share/nvim/lazy/blink.cmp/Cargo.toml
+# Python Provider
+python3 -m venv ~/.venvs/myenv
+source ~/.venvs/myenv/bin/activate
+pip install pynvim
 
 # -----------------------------
 # Ranger
@@ -35,4 +46,3 @@ pipx install xlsx2csv
 # Lunar macOS 系统的屏幕亮度 / 色温调节工具，支持根据环境光自动适配屏幕，也可手动精细化调整，适合需要优化屏幕显示效果的用户（如夜间护眼、匹配外接显示器等）。
 # -----------------------------
 brew install --cask lunar
-
