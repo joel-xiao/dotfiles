@@ -2,7 +2,9 @@
 # NVIM
 # -----------------------------
 # lang vue
-npm install -g @vue/language-server
+npm install -g @volar/vue-language-server
+# lang TS
+npm install -g typescript typescript-language-server
 # blink.cmp
 cargo build --release --manifest-path ~/.local/share/nvim/lazy/blink.cmp/Cargo.toml
 # Python Provider
