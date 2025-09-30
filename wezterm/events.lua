@@ -4,7 +4,8 @@ local mux = wezterm.mux
 -- 窗口启动时自动最大化
 wezterm.on("gui-startup", function()
   local _, _, window = mux.spawn_window({})
-  window:gui_window():maximize()
+  window:gui_window():toggle_fullscreen()
+  -- window:gui_window():maximize()
 end)
 
 -- 可选：窗口大小改变时自动调整字体（避免底部 padding）
