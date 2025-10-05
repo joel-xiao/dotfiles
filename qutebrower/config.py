@@ -128,11 +128,6 @@ config.bind("gf", "hint all tab")
 config.bind("v", "mode-enter caret")  # 仅修复模式名称（visual→caret，避免报错）
 config.bind("y", "yank selection", mode="caret")  # 仅修复模式名称
 
-config.bind("<Return>", "insert-text \n", mode="insert")
-config.bind("<Return>", "command-accept", mode="command")
-config.bind("<Return>", "search-accept", mode="search")
-config.bind("<Return>", "follow-selected", mode="hint")
-
 # ----------------------------
 # DevTools
 # ----------------------------
