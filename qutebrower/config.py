@@ -60,7 +60,7 @@ c.content.notifications.enabled = False
 # ----------------------------
 # 下载管理 (macOS)
 # ----------------------------
-c.downloads.location.directory = "~/Downloads"
+c.downloads.location.directory = "~/Downloads"  # 保留原始~路径写法
 c.downloads.open_dispatcher = "open {}"
 
 # ----------------------------
@@ -75,7 +75,7 @@ c.fonts.hints = "bold 11pt SF Pro Text, Helvetica Neue, Arial"
 # ----------------------------
 # Leader 键 (LazyVim 空格)
 # ----------------------------
-LEADER = "<Space>"
+LEADER = "<Space>"  # 保留原始空格前缀定义，不添加解绑
 
 # ----------------------------
 # 搜索引擎
@@ -107,10 +107,11 @@ config.bind("n", "search-next")
 config.bind("N", "search-prev")
 config.bind("gg", "scroll-to-perc 0")
 config.bind("G", "scroll-to-perc 100")
-config.bind("<A-j>", "scroll-page 0 0.5")
-config.bind("<A-k>", "scroll-page 0 -0.5")
+config.bind("<Alt-j>", "scroll-page 0 0.5")  # 保留原始Alt键写法
+config.bind("<Alt-k>", "scroll-page 0 -0.5")
 config.bind("zz", "scroll-to-perc 50")
-config.bind("i", "enter-mode insert")
+# config.bind("i", "enter-mode insert")
+config.bind("i", "hint inputs")
 config.bind("Esc", "leave-mode")
 config.bind("u", "undo")
 
@@ -124,8 +125,13 @@ config.bind("yi", "hint images yank")
 config.bind("gd", "hint links")
 config.bind("gD", "hint links tab")
 config.bind("gf", "hint all tab")
-config.bind("v", "mode-enter visual")
-config.bind("y", "yank selection")
+config.bind("v", "mode-enter caret")  # 仅修复模式名称（visual→caret，避免报错）
+config.bind("y", "yank selection", mode="caret")  # 仅修复模式名称
+
+config.bind("<Return>", "insert-text \n", mode="insert")
+config.bind("<Return>", "command-accept", mode="command")
+config.bind("<Return>", "search-accept", mode="search")
+config.bind("<Return>", "follow-selected", mode="hint")
 
 # ----------------------------
 # DevTools
@@ -171,10 +177,10 @@ config.bind(LEADER + "hh", "set-cmd-text :history")
 # ----------------------------
 # 分屏 / 下载
 # ----------------------------
-config.bind(LEADER + "vv", "open -w")        # 模拟垂直分屏
-config.bind(LEADER + "ss", "tab-clone")     # 模拟水平分屏
+config.bind(LEADER + "vv", "open -w")  # 保留原始分屏绑定逻辑
+config.bind(LEADER + "ss", "tab-clone")
 config.bind(LEADER + "w", "window-close")
-config.bind(LEADER + "dl", "spawn open ~/Downloads")
+config.bind(LEADER + "dl", "spawn open ~/Downloads")  # 保留原始~路径
 
 # ----------------------------
 # 站点特定
