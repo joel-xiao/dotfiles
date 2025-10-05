@@ -13,15 +13,15 @@ doom_one.setup(c, {
 # ----------------------------
 # 基础设置
 # ----------------------------
-c.url.default_page = "https://duckduckgo.com"
-c.url.start_pages = ["https://duckduckgo.com"]
+c.url.default_page = "https://baidu.com"
+c.url.start_pages = ["https://baidu.com"]
 c.url.searchengines = {
     "DEFAULT": "https://www.google.com/search?q={}",
     "ddg": "https://duckduckgo.com/?q={}",
     "gh": "https://github.com/search?q={}",
     "bd": "https://www.baidu.com/s?wd={}",
     "yt": "https://www.youtube.com/results?search_query={}",
-    "rd": "https://www.reddit.com/search/?q={}"  # 修复：补充搜索参数{}
+    "rd": "https://www.reddit.com/search/?q={}",
 }
 c.content.blocking.enabled = True
 c.content.blocking.method = "both"
@@ -36,9 +36,9 @@ c.tabs.show = "multiple"
 c.tabs.background = True
 c.statusbar.show = "in-mode"
 c.tabs.favicons.scale = 1.2
-c.zoom.default = "125%"  # 全局默认缩放，不支持URL模式
+c.zoom.default = "125%"
 c.colors.webpage.darkmode.enabled = True
-c.colors.webpage.darkmode.policy.images = "smart"  # macOS 暗色模式优化
+c.colors.webpage.darkmode.policy.images = "smart"
 c.colors.webpage.preferred_color_scheme = "dark"
 c.input.partial_timeout = 300
 c.input.insert_mode.auto_load = True
@@ -46,33 +46,25 @@ c.input.insert_mode.auto_leave = True
 c.input.spatial_navigation = False
 
 # ----------------------------
-# 隐私与安全增强
+# 隐私与安全
 # ----------------------------
-# Cookie 控制
 c.content.cookies.accept = "no-3rdparty"
-
-# JavaScript 管理
-c.content.javascript.enabled = True  # 全局启用
-# 站点例外设置
+c.content.javascript.enabled = True
 config.set("content.javascript.enabled", False, "https://example.com/*")
 config.set("content.javascript.enabled", True, "https://*.google.com/*")
-
-# 媒体与安全（修复了无效配置项）
 c.content.autoplay = False
-c.content.xss_auditing = True  # 替换无效的content.ssl_strict
-c.content.javascript.can_close_tabs = False  # 替换无效的force_https
-c.content.geolocation = False              # macOS 隐私默认设置
-c.content.notifications.enabled = False    # 禁用网页通知
+c.content.xss_auditing = True
+c.content.geolocation = False
+c.content.notifications.enabled = False
 
 # ----------------------------
-# 下载管理 (macOS 适配)
+# 下载管理 (macOS)
 # ----------------------------
-c.downloads.location.directory = "~/Downloads"  # macOS 默认下载路径
-c.downloads.open_dispatcher = "open {}"  # macOS 打开文件的命令
-# 移除无效的show_progress_in_statusbar配置
+c.downloads.location.directory = "~/Downloads"
+c.downloads.open_dispatcher = "open {}"
 
 # ----------------------------
-# 字体设置 (macOS 系统字体)
+# 字体设置
 # ----------------------------
 c.fonts.default_family = ["SF Pro Text", "Helvetica Neue", "Arial", "sans-serif"]
 c.fonts.default_size = "14pt"
@@ -81,13 +73,12 @@ c.fonts.tabs.unselected = "13pt SF Pro Text, Helvetica Neue, Arial"
 c.fonts.hints = "bold 11pt SF Pro Text, Helvetica Neue, Arial"
 
 # ----------------------------
-# 前缀
+# Leader 键 (LazyVim 空格)
 # ----------------------------
-LEADER = ","  # 主前缀，高响应
-SECOND = ";"  # 次前缀，快速操作
+LEADER = "<Space>"
 
 # ----------------------------
-# 搜索引擎快捷键
+# 搜索引擎
 # ----------------------------
 config.bind(LEADER + "sg", "set-cmd-text :open https://www.google.com/search?q=")
 config.bind(LEADER + "sd", "set-cmd-text :open https://duckduckgo.com/?q=")
@@ -97,147 +88,114 @@ config.bind(LEADER + "sr", "set-cmd-text :open https://www.reddit.com/search/?q=
 config.bind(LEADER + "sh", "set-cmd-text :open https://github.com/search?q=")
 
 # ----------------------------
-# 标签页 / Buffer 管理
+# 标签页管理 / Buffer
 # ----------------------------
-config.bind(LEADER + "n", "open -t")            # 新标签
-config.bind(LEADER + "x", "tab-close")          # 关闭标签
-config.bind(LEADER + "b", "set-cmd-text :buffer")  # buffer 列表
-config.bind(LEADER + "bn", "tab-next")          # 下一个标签
-config.bind(LEADER + "bp", "tab-prev")          # 上一个标签
-config.bind(LEADER + "wo", "tab-only")          # 只保留当前标签
-config.bind(LEADER + "N", "tab-move +1")        # 标签向右移动
-config.bind(LEADER + "P", "tab-move -1")        # 标签向左移动
+config.bind(LEADER + "bn", "tab-next")
+config.bind(LEADER + "bp", "tab-prev")
+config.bind(LEADER + "b", "set-cmd-text :buffer")
+config.bind(LEADER + "n", "open -t")
+config.bind(LEADER + "x", "tab-close")
+config.bind(LEADER + "wo", "tab-only")
+config.bind(LEADER + "N", "tab-move +1")
+config.bind(LEADER + "P", "tab-move -1")
 
 # ----------------------------
-# 网页操作 / Vim 风格
+# Vim 核心操作
 # ----------------------------
-config.bind("/", "set-cmd-text /")             # 搜索
-config.bind("n", "search-next")                # 下一个搜索结果
-config.bind("N", "search-prev")                # 上一个搜索结果
-config.bind("H", "back")                       # 后退
-config.bind("L", "forward")                    # 前进
-config.bind("zz", "scroll-to-perc 50")         # 居中
-config.bind("J", "scroll-page 0 0.5")          # 下滚半页
-config.bind("K", "scroll-page 0 -0.5")         # 上滚半页
-config.bind("gg", "scroll-to-perc 0")          # 到顶部
-config.bind("G", "scroll-to-perc 100")         # 到底部
-config.bind("i", "enter-mode insert")          # 进入输入模式
-config.bind("Esc", "leave-mode")               # 离开输入模式
-config.bind("u", "undo")                       # 回退操作
+config.bind("/", "set-cmd-text /")
+config.bind("n", "search-next")
+config.bind("N", "search-prev")
+config.bind("gg", "scroll-to-perc 0")
+config.bind("G", "scroll-to-perc 100")
+config.bind("<A-j>", "scroll-page 0 0.5")
+config.bind("<A-k>", "scroll-page 0 -0.5")
+config.bind("zz", "scroll-to-perc 50")
+config.bind("i", "enter-mode insert")
+config.bind("Esc", "leave-mode")
+config.bind("u", "undo")
 
 # ----------------------------
-# Hint / 跳转 / LazyVim 风格
+# Hint / Visual / Yank
 # ----------------------------
-config.bind("f", "hint links")                 # 跳转链接
-config.bind("F", "hint links tab")             # 新标签打开
-config.bind("yf", "hint links yank")           # 复制链接
-config.bind("yi", "hint images yank")          # 复制图片 URL
-config.bind("gd", "set-cmd-text /")            # 搜索当前页 (模拟 gd)
-config.bind("gD", "set-cmd-text :open -t ")    # 新标签搜索 (模拟 gD)
-config.bind("gf", "hint all tab")              # 跳转任意元素并新标签
-config.bind("v", "mode-enter visual")          # 选文本复制
-config.bind("y", "yank selection")             # yank 选中文本
+config.bind("f", "hint links")
+config.bind("F", "hint links tab")
+config.bind("yf", "hint links yank")
+config.bind("yi", "hint images yank")
+config.bind("gd", "hint links")
+config.bind("gD", "hint links tab")
+config.bind("gf", "hint all tab")
+config.bind("v", "mode-enter visual")
+config.bind("y", "yank selection")
 
 # ----------------------------
-# DevTools / 前端开发
+# DevTools
 # ----------------------------
-config.bind(LEADER + "d", "devtools")          # 打开 DevTools
-config.bind(LEADER + "dc", "devtools console") # Console 面板
-config.bind(LEADER + "de", "devtools elements")# DOM 面板
-config.bind(LEADER + "ds", "devtools sources") # Sources 面板（断点 / log）
-config.bind(LEADER + "dn", "devtools network") # Network 面板
+config.bind(LEADER + "d", "devtools")
+config.bind(LEADER + "dc", "devtools console")
+config.bind(LEADER + "de", "devtools elements")
+config.bind(LEADER + "ds", "devtools sources")
+config.bind(LEADER + "dn", "devtools network")
 
 # ----------------------------
-# 其他工具 & 刷新
+# 刷新 / 配置 / 退出
 # ----------------------------
-config.bind(LEADER + "r", "reload")            # 刷新
-config.bind(LEADER + "R", "reload -f")         # 强制刷新
-config.bind(LEADER + "s", "config-source")     # 重新加载配置
-config.bind(LEADER + "q", "quit")              # 退出浏览器
-config.bind(LEADER + "g", "open -t https://github.com") # 打开 GitHub
-config.bind(LEADER + "y", "yank")              # 复制当前 URL
-config.bind(LEADER + "p", "open -t {clipboard}")  # 粘贴打开
+config.bind(LEADER + "r", "reload")
+config.bind(LEADER + "R", "reload -f")
+config.bind(LEADER + "s", "config-source")
+config.bind(LEADER + "q", "quit")
+config.bind(LEADER + "g", "open -t https://github.com")
+config.bind(LEADER + "y", "yank")
+config.bind(LEADER + "p", "open -t {clipboard}")
 
 # ----------------------------
-# 代理控制
+# 代理
 # ----------------------------
-config.bind(LEADER + "pa", "set content.proxy http://127.0.0.1:7890")  # 开启 HTTP 代理
-config.bind(LEADER + "pn", "set content.proxy ''")                     # 关闭代理
-config.bind(LEADER + "ps", "set content.proxy socks5://127.0.0.1:7891") # 开启 SOCKS5 代理
+config.bind(LEADER + "pa", "set content.proxy http://127.0.0.1:7890")
+config.bind(LEADER + "pn", "set content.proxy ''")
+config.bind(LEADER + "ps", "set content.proxy socks5://127.0.0.1:7891")
 
 # ----------------------------
-# 页面缩放控制
+# 缩放
 # ----------------------------
 config.bind(LEADER + "+", "zoom-in")
 config.bind(LEADER + "-", "zoom-out")
 config.bind(LEADER + "0", "zoom-reset")
 
 # ----------------------------
-# 书签与历史管理
+# 书签 / 历史
 # ----------------------------
-config.bind(LEADER + "ma", "bookmark-add")     # 添加书签
-config.bind(LEADER + "ml", "set-cmd-text :bookmark-list")  # 查看书签
-config.bind(LEADER + "hh", "set-cmd-text :history")  # 历史记录
+config.bind(LEADER + "ma", "bookmark-add")
+config.bind(LEADER + "ml", "set-cmd-text :bookmark-list")
+config.bind(LEADER + "hh", "set-cmd-text :history")
 
 # ----------------------------
-# 分屏操作（修复快捷键冲突）
+# 分屏 / 下载
 # ----------------------------
-config.bind(LEADER + "vv", "vsplit")  # 垂直分屏（修改为双v避免冲突）
-config.bind(LEADER + "ss", "hsplit")  # 水平分屏（修改为双s避免冲突）
-config.bind(LEADER + "w", "window-close")  # 关闭当前分屏
+config.bind(LEADER + "vv", "open -w")        # 模拟垂直分屏
+config.bind(LEADER + "ss", "tab-clone")     # 模拟水平分屏
+config.bind(LEADER + "w", "window-close")
+config.bind(LEADER + "dl", "spawn open ~/Downloads")
 
 # ----------------------------
-# 下载管理快捷键
+# 站点特定
 # ----------------------------
-config.bind(LEADER + "dl", "downloads-folder")  # 打开下载目录
-
-# ----------------------------
-# 次前缀 ; → 快速操作
-# ----------------------------
-config.bind(SECOND + "r", "reload")
-config.bind(SECOND + "R", "reload -f")
-config.bind(SECOND + "d", "devtools")
-config.bind(SECOND + "q", "quit")
-config.bind(SECOND + "o", "set-cmd-text :open ")
-config.bind(SECOND + "O", "set-cmd-text :open -t ")
-config.bind(SECOND + "y", "yank")             # 次前缀复制 URL
-
-# ----------------------------
-# 站点特定配置（使用支持的配置项）
-# ----------------------------
-# 对 GitHub 禁用深色模式
 config.set("colors.webpage.darkmode.enabled", False, "https://github.com/*")
 
 # ----------------------------
-# macOS 风格快捷键 (Command 键)
+# macOS Cmd 键
 # ----------------------------
-# 窗口控制
-config.bind("Cmd-q", "quit")                  # 退出浏览器
-config.bind("Cmd-w", "tab-close")             # 关闭当前标签页
-config.bind("Cmd-n", "open -w")               # 新建窗口
-config.bind("Cmd-t", "open -t")               # 新建标签页
-
-# 标签页导航
-config.bind("Cmd-Shift-]", "tab-next")        # 下一个标签页
-config.bind("Cmd-Shift-[", "tab-prev")        # 上一个标签页
-config.bind("Cmd-1", "tab-focus 1")           # 切换到第1个标签
-config.bind("Cmd-2", "tab-focus 2")           # 切换到第2个标签
-config.bind("Cmd-3", "tab-focus 3")           # 切换到第3个标签
-config.bind("Cmd-4", "tab-focus 4")           # 切换到第4个标签
-config.bind("Cmd-5", "tab-focus 5")           # 切换到第5个标签
-
-# 刷新与缩放
-config.bind("Cmd-r", "reload")                # 刷新页面
-config.bind("Cmd-Shift-r", "reload -f")       # 强制刷新
-config.bind("Cmd-=", "zoom-in")               # 放大
-config.bind("Cmd--", "zoom-out")              # 缩小
-config.bind("Cmd-0", "zoom-reset")            # 重置缩放
-
-# 编辑操作
-config.bind("Cmd-f", "set-cmd-text /")        # 页面搜索
-config.bind("Cmd-a", "tab-focus")             # 全选标签
-config.bind("Cmd-c", "yank selection")        # 复制选中内容
-config.bind("Cmd-v", "insert-text {clipboard}") # 粘贴
-
-# 地址栏操作
-config.bind("Cmd-l", "set-cmd-text :open")    # 聚焦地址栏
+config.bind("Cmd-q", "quit")
+config.bind("Cmd-w", "tab-close")
+config.bind("Cmd-n", "open -w")
+config.bind("Cmd-t", "open -t")
+config.bind("Cmd-Shift-]", "tab-next")
+config.bind("Cmd-Shift-[", "tab-prev")
+config.bind("Cmd-r", "reload")
+config.bind("Cmd-Shift-r", "reload -f")
+config.bind("Cmd-=", "zoom-in")
+config.bind("Cmd--", "zoom-out")
+config.bind("Cmd-0", "zoom-reset")
+config.bind("Cmd-f", "set-cmd-text /")
+config.bind("Cmd-c", "yank selection")
+config.bind("Cmd-v", "insert-text {clipboard}")
+config.bind("Cmd-l", "set-cmd-text :open")
