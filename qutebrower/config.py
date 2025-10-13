@@ -1,6 +1,9 @@
 import doom_one
 
+c = c  # type: ignore
+config = c  # type: ignore
 config.load_autoconfig()
+
 
 # ----------------------------
 # 主题 (Doom-One 风格优化)
