@@ -77,7 +77,7 @@
     "map o Vomnibar.activate",
     "map <a-g> Vomnibar.activateInNewTab",
     "map t Vomnibar.activateTabSelection preferTabs=\"new\"",
-    "map h Vomnibar.activateHistoryInNewTab",
+    "map H Vomnibar.activateHistoryInNewTab",
     "map B Vomnibar.activateBookmarksInNewTab",
     "map Fe Vomnibar.activateUrl",
     
