@@ -1,0 +1,21 @@
+# ------------------------------
+# crates.io 国内镜像（正确 URL）
+# ------------------------------
+[source.crates-io]
+replace-with = "bfsu"
+
+[source.bfsu]
+registry = "sparse+https://mirrors.bfsu.edu.cn/crates.io-index/"# ------------------------------
+
+# 网络增强配置
+# ------------------------------
+[net]
+git-fetch-with-cli = true
+retry = 3
+timeout = 300
+
+# ------------------------------
+# 构建并行
+# ------------------------------
+[build]
+jobs = 4
