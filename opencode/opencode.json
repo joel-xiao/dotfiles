@@ -1,0 +1,80 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "opencode",
+  "default_agent": "build",
+  "share": "manual",
+  "snapshot": false,
+  "logLevel": "INFO",
+  "autoupdate": "notify",
+  "username": "",
+  "permission": "allow",
+  "compaction": { "auto": true, "prune": true },
+  "watcher": { "ignore": ["node_modules/**", "dist/**", ".git/**", ".trae/**"] },
+  "server": { "port": 4096, "hostname": "127.0.0.1", "mdns": true, "cors": ["http://localhost:5173"] },
+  "keybinds": {},
+  "tools": {},
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "description": "开发执行：实现需求/修复 bug/重构/补测试/优化",
+      "prompt": "你是我的资深工程师搭档。请基于当前项目上下文完成需求实现或修复。\n\n通用要求：\n- 严格遵循项目现有规范与目录结构（优先读项目规则文件/现有代码风格）\n- 不引入无关依赖；优先复用项目已有工具/组件/封装\n- 处理边界与空态：可空值、加载态、错误态、权限/无数据\n- 保证类型与可维护性：避免 any、减少隐式副作用、避免重复逻辑\n- 修改后必须验证：按项目已有脚本运行 typecheck/lint/tests/build（以项目约定为准），并修到通过\n\n交付格式：\n- 简要说明改动点与文件落点\n- 需要时给出验证步骤/关键用例\n"
+    },
+    "plan": {
+      "mode": "primary",
+      "description": "只做分析/计划，不做任何改动",
+      "tools": { "write": false, "edit": false, "patch": false, "bash": false },
+      "permission": { "*": "ask", "edit": "deny", "bash": "deny" },
+      "prompt": "你处于 Plan 模式：只输出计划与方案，不要修改任何文件，不要运行命令。\n\n要求：\n- 先用 3-8 条复述需求与关键假设\n- 给出分步任务清单（每步：改哪些目录/文件、做什么、验收标准）\n- 说明风险点/边界条件/回滚方案\n- 最后列出需要我确认的阻塞项（最多 5 条）\n"
+    },
+    "review": {
+      "mode": "subagent",
+      "description": "代码审查：找问题并给可执行建议，不改代码",
+      "tools": { "write": false, "edit": false, "patch": false, "bash": false },
+      "prompt": "请对我提供的代码/变更做审查：指出潜在 bug、边界/空态缺失、类型风险、性能问题、安全问题与可维护性问题。\n输出：问题清单（含风险等级）+ 可执行修改建议（必要时给替换代码块）。\n"
+    },
+    "debug": {
+      "mode": "subagent",
+      "description": "排障：复现、定位根因、给修复与验证方案",
+      "prompt": "你是排障专家。目标是最快定位根因并给出修复方案。\n流程：现象归纳 -> 假设列表（按概率）-> 定位步骤（要看的文件/日志/命令）-> 根因结论 -> 修复方案 -> 回归验证点。\n"
+    }
+  },
+  "command": {
+    "dev": {
+      "description": "通用开发：实现需求（Build 执行）",
+      "agent": "build",
+      "template": "请基于当前项目上下文完成需求实现。\n\n通用要求：\n- 严格遵循项目现有规范与目录结构（优先读项目规则文件/现有代码风格）\n- 不引入无关依赖；优先复用项目已有工具/组件/封装\n- 处理边界与空态：可空值、加载态、错误态、权限/无数据\n- 保证类型与可维护性：避免 any、减少隐式副作用、避免重复逻辑\n- 修改后必须验证：按项目已有脚本运行 typecheck/lint/tests/build（以项目约定为准），并修到通过\n\n输出：改动点概述 + 文件落点清单 + 必要的代码变更。\n\n需求：$ARGUMENTS"
+    },
+    "fix": {
+      "description": "修复 Bug（Build 执行，最小改动）",
+      "agent": "build",
+      "template": "请修复以下问题，并保持行为一致（除 bug 修复外不要改动需求）。\n\n要求：\n- 先定位根因（最小解释即可）\n- 给出最小变更方案，避免大范围重构\n- 补齐边界/空态/错误处理与类型\n- 修复后提供自检清单（包含关键用例与验证步骤）\n- 修改后必须验证：按项目已有脚本运行 typecheck/lint/tests/build（以项目约定为准）\n\n问题：$ARGUMENTS"
+    },
+    "planit": { "description": "先出计划（Plan 模式）", "agent": "plan", "template": "请先输出一个可执行计划，不要改代码。\n\n需求：$ARGUMENTS" },
+    "reviewit": { "description": "代码审查（Review 子代理）", "agent": "review", "template": "请审查以下内容：\n\n$ARGUMENTS" },
+    "refactor": {
+      "description": "重构（保持行为一致）",
+      "agent": "build",
+      "template": "请在保持行为一致的前提下重构以下内容：消除重复、显式化副作用、强化类型与边界处理，并按项目既有分层/目录规范拆分代码。\n\n输出：改动点概述 + 文件落点清单 + 最终代码/变更。\n\n内容：$ARGUMENTS"
+    },
+    "tests": {
+      "description": "补单元测试（覆盖正常/边界/异常）",
+      "agent": "build",
+      "template": "请为以下组件/函数补齐单元测试：覆盖正常/边界/异常。\n\n要求：\n- 若项目已存在测试框架：沿用现有写法与目录\n- 若不存在：给出最小可落地方案与运行命令\n- 测试命名、断言风格按项目习惯\n\n目标：$ARGUMENTS"
+    },
+    "explain": { "description": "解释代码（通俗 + 边界/风险）", "agent": "build", "template": "请用通俗易懂的方式解释以下代码：核心流程、关键状态/数据结构、边界与空态策略，并指出潜在风险点（类型/并发/性能/安全）。\n\n代码/文件：$ARGUMENTS" },
+    "optimize": { "description": "性能/可读性优化（保持行为一致）", "agent": "build", "template": "请优化以下代码的性能与可读性，同时保持行为一致并遵循项目规范：减少不必要的计算/渲染/IO，提升类型与可维护性。\n\n目标：$ARGUMENTS" },
+    "security": { "description": "安全审计与修复建议", "agent": "build", "template": "请分析以下代码的安全风险（XSS/注入/越权/敏感信息泄露/依赖风险），并给出可在本项目落地的修复方案与代码。\n\n目标：$ARGUMENTS" },
+    "architecture": { "description": "架构分析与最小迁移方案", "agent": "plan", "template": "请分析当前模块/系统架构：目录结构与职责边界、依赖方向与复用策略、可扩展点与最小迁移步骤（尽量少改动）。\n\n范围：$ARGUMENTS" },
+    "database": { "description": "接口/数据库交互设计建议（字段映射/空值/错误码/分页）", "agent": "plan", "template": "请分析接口/数据库交互设计：字段映射、空值策略、错误码处理、缓存/分页策略，并给出更规范可维护的实现建议与落地步骤。\n\n内容：$ARGUMENTS" },
+    "translate": { "description": "代码迁移/翻译（保持逻辑一致）", "agent": "plan", "template": "请将以下代码转换为目标语言/框架（Rust/Java/React/TS/Vue/Node.js/CSS/HTML），保持逻辑一致，并补齐关键类型定义与边界处理策略。\n\n目标：$ARGUMENTS" }
+  },
+  "provider": {},
+  "plugin": [],
+  "mcp": {},
+  "lsp": {},
+  "formatter": {},
+  "enterprise": {},
+  "experimental": {},
+  "enabled_providers": [],
+  "disabled_providers": []
+}
