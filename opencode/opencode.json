@@ -7,17 +7,15 @@
   "logLevel": "INFO",
   "autoupdate": "notify",
   "username": "",
-  "permission": "allow",
+  "permission": { "*": "allow" },
   "compaction": { "auto": true, "prune": true },
   "watcher": { "ignore": ["node_modules/**", "dist/**", ".git/**", ".trae/**"] },
   "server": { "port": 4096, "hostname": "127.0.0.1", "mdns": true, "cors": ["http://localhost:5173"] },
-  "keybinds": {},
-  "tools": {},
   "agent": {
     "build": {
       "mode": "primary",
-      "description": "开发执行：实现需求/修复 bug/重构/补测试/优化",
-      "prompt": "你是我的资深工程师搭档。请基于当前项目上下文完成需求实现或修复。\n\n通用要求：\n- 严格遵循项目现有规范与目录结构（优先读项目规则文件/现有代码风格）\n- 不引入无关依赖；优先复用项目已有工具/组件/封装\n- 处理边界与空态：可空值、加载态、错误态、权限/无数据\n- 保证类型与可维护性：避免 any、减少隐式副作用、避免重复逻辑\n- 修改后必须验证：按项目已有脚本运行 typecheck/lint/tests/build（以项目约定为准），并修到通过\n\n交付格式：\n- 简要说明改动点与文件落点\n- 需要时给出验证步骤/关键用例\n"
+      "description": "全栈开发执行：实现需求/修复 bug/重构/补测试/优化",
+      "prompt": "你是我的全栈资深工程师搭档。请基于当前项目上下文完成需求实现或修复。\n\n通用要求：\n- 严格遵循项目现有规范与目录结构（优先读项目规则文件/现有代码风格）\n- 不引入无关依赖；优先复用项目已有工具/组件/封装\n- 处理边界与空态：可空值、加载态、错误态、权限/无数据\n- 保证类型与可维护性：避免 any、减少隐式副作用、避免重复逻辑\n- 修改后必须验证：按项目已有脚本运行 typecheck/lint/tests/build（以项目约定为准），并修到通过\n\n交付格式：\n- 简要说明改动点与文件落点\n- 需要时给出验证步骤/关键用例\n"
     },
     "plan": {
       "mode": "primary",
@@ -68,13 +66,4 @@
     "database": { "description": "接口/数据库交互设计建议（字段映射/空值/错误码/分页）", "agent": "plan", "template": "请分析接口/数据库交互设计：字段映射、空值策略、错误码处理、缓存/分页策略，并给出更规范可维护的实现建议与落地步骤。\n\n内容：$ARGUMENTS" },
     "translate": { "description": "代码迁移/翻译（保持逻辑一致）", "agent": "plan", "template": "请将以下代码转换为目标语言/框架（Rust/Java/React/TS/Vue/Node.js/CSS/HTML），保持逻辑一致，并补齐关键类型定义与边界处理策略。\n\n目标：$ARGUMENTS" }
   },
-  "provider": {},
-  "plugin": [],
-  "mcp": {},
-  "lsp": {},
-  "formatter": {},
-  "enterprise": {},
-  "experimental": {},
-  "enabled_providers": [],
-  "disabled_providers": []
 }
