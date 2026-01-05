@@ -1,6 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "opencode",
+  "model": "opencode/gpt-5-nano",
+  "small_model": "opencode/gpt-5-nano",
   "default_agent": "build",
   "share": "manual",
   "snapshot": false,
@@ -65,5 +67,34 @@
     "architecture": { "description": "架构分析与最小迁移方案", "agent": "plan", "template": "请分析当前模块/系统架构：目录结构与职责边界、依赖方向与复用策略、可扩展点与最小迁移步骤（尽量少改动）。\n\n范围：$ARGUMENTS" },
     "database": { "description": "接口/数据库交互设计建议（字段映射/空值/错误码/分页）", "agent": "plan", "template": "请分析接口/数据库交互设计：字段映射、空值策略、错误码处理、缓存/分页策略，并给出更规范可维护的实现建议与落地步骤。\n\n内容：$ARGUMENTS" },
     "translate": { "description": "代码迁移/翻译（保持逻辑一致）", "agent": "plan", "template": "请将以下代码转换为目标语言/框架（Rust/Java/React/TS/Vue/Node.js/CSS/HTML），保持逻辑一致，并补齐关键类型定义与边界处理策略。\n\n目标：$ARGUMENTS" }
+  },
+  "provider": {
+    "openai": {
+      "models": {
+        "gpt-5.2": {
+          "options": { "reasoningEffort": "high", "textVerbosity": "low", "reasoningSummary": "auto" }
+        }
+      }
+    },
+    "anthropic": {
+      "models": {
+        "claude-opus-4-5": { "options": { "thinking": { "type": "enabled", "budgetTokens": 32000 } } },
+        "claude-sonnet-4-5": { "options": { "thinking": { "type": "enabled", "budgetTokens": 16000 } } }
+      }
+    },
+    "google": {
+      "models": {
+        "gemini-3-pro": {}
+      }
+    },
+    "dashscope": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "DashScope (Qwen/千问)",
+      "options": { "baseURL": "https://dashscope.aliyuncs.com/compatible-mode/v1" },
+      "models": {
+        "qwen3-coder-plus": { "name": "Qwen3 Coder Plus" },
+        "qwen-plus": { "name": "Qwen Plus" }
+      }
+    }
   },
 }
