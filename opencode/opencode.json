@@ -70,6 +70,7 @@
   },
   "provider": {
     "openai": {
+      "options": { "baseURL": "https://api.openai.com/v1" },
       "models": {
         "gpt-5.2": {
           "options": { "reasoningEffort": "high", "textVerbosity": "low", "reasoningSummary": "auto" }
@@ -77,12 +78,14 @@
       }
     },
     "anthropic": {
+      "options": { "baseURL": "https://api.anthropic.com/v1" },
       "models": {
         "claude-opus-4-5": { "options": { "thinking": { "type": "enabled", "budgetTokens": 32000 } } },
         "claude-sonnet-4-5": { "options": { "thinking": { "type": "enabled", "budgetTokens": 16000 } } }
       }
     },
     "google": {
+      "options": { "baseURL": "https://generativelanguage.googleapis.com/v1beta" },
       "models": {
         "gemini-3-pro": {}
       }
@@ -98,3 +101,4 @@
     }
   },
 }
+
